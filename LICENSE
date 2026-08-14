@@ -1,0 +1,52 @@
+# License — Showcase Materials
+
+Copyright (c) 2026 NebulaCloud Studio. All rights reserved.
+
+This repository is a **public project showcase** created using NebulaCloud Studio.
+
+## What this license covers
+
+This license applies **only** to the showcase materials contained in this
+repository, including but not limited to:
+
+- the README and documentation text
+- screenshots and video
+- conceptual diagrams and the social preview image
+- sample output files (`assets/outputs/`)
+
+## What this license does NOT cover
+
+This license does **not** grant any rights to, and this repository does **not**
+contain:
+
+- the application source code
+- internal prompts, agent workflows, or AI orchestration logic
+- build scripts, deployment pipelines, or infrastructure configuration
+- proprietary datasets, models, or fine-tuning data
+- the NebulaCloud Studio platform, its runtime, plugins, or capability packs
+- any trademarks of NebulaCloud Studio or third parties
+
+## Permitted use
+
+You may view, download, and reference the showcase materials for personal and
+non-commercial evaluation purposes, provided you:
+
+1. retain this notice and the attribution in `ATTRIBUTIONS.md`, and
+2. do not present the materials as your own work.
+
+## Not permitted
+
+You may not:
+
+- redistribute, sublicense, sell, or commercially exploit the materials;
+- use the materials to misrepresent authorship, capability, or results;
+- imply that the underlying source code or platform is being provided, licensed,
+  or open-sourced by this repository.
+
+## Sample data
+
+Third-party sample data (buildingSMART `Sample-Test-Files`) and open-source
+technologies referenced by this showcase remain subject to their own respective
+licenses, as noted in `ATTRIBUTIONS.md`.
+
+For questions, contact [NebulaCloud Studio](https://nebulacloud.studio).
