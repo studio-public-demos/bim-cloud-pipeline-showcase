@@ -2,11 +2,11 @@
 
 **Turn Revit & IFC models into web-ready GLB/GLTF 3D assets and structured metadata JSON — through one cloud pipeline and one API.**
 
-> Notice
+> This repository is the public project showcase for **BIM Cloud Pipeline**,
+> created using **NebulaCloud Studio**.
 >
-> This repository is a public project showcase created using **NebulaCloud Studio**.
-> The proprietary source code, implementation details, prompts, workflows, datasets,
-> infrastructure, and deployment configuration are intentionally **not included**.
+> The full engineering implementation is published separately at
+> **[studio-public-demos/bim-cloud-pipeline](https://github.com/studio-public-demos/bim-cloud-pipeline)**.
 
 ---
 
@@ -43,11 +43,12 @@ A single pipeline removes that friction:
 
 ## Live Demo
 
-The interactive application — upload, job tracking, live 3D viewer, metadata explorer,
-and model comparison — is demonstrated in the screenshots and walkthrough below.
+**Try it now:** [studio-public-demos.github.io/bim-cloud-pipeline-showcase](https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/)
 
-A hosted instance is available on request for evaluation. Contact via
-[NebulaCloud Studio](https://nebulacloud.studio) to arrange access.
+The interactive application — upload, job tracking, live 3D viewer, metadata
+explorer, and model comparison — is demonstrated in the screenshots and
+walkthrough below. The full pipeline (upload → process → track → download) runs
+in the [implementation repository](https://github.com/studio-public-demos/bim-cloud-pipeline).
 
 ## Demo Video
 
