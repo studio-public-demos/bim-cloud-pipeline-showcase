@@ -43,12 +43,14 @@ A single pipeline removes that friction:
 
 ## Live Demo
 
-**Try it now:** [studio-public-demos.github.io/bim-cloud-pipeline-showcase](https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/)
+**▶ Try the live pipeline:** [bim-cloud-pipeline.onrender.com](https://bim-cloud-pipeline.onrender.com/) —
+upload your own Revit (`.rvt`) or IFC (`.ifc`) file and watch it convert to GLB/GLTF
++ structured metadata in real time.
 
-The interactive application — upload, job tracking, live 3D viewer, metadata
-explorer, and model comparison — is demonstrated in the screenshots and
-walkthrough below. The full pipeline (upload → process → track → download) runs
-in the [implementation repository](https://github.com/studio-public-demos/bim-cloud-pipeline).
+**Instant static preview (no backend):** [studio-public-demos.github.io/bim-cloud-pipeline-showcase](https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/)
+
+The full pipeline (upload → process → track → download) runs in the
+[implementation repository](https://github.com/studio-public-demos/bim-cloud-pipeline).
 
 ## Demo Video
 
