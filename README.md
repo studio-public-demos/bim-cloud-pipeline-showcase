@@ -54,7 +54,9 @@ in the [implementation repository](https://github.com/studio-public-demos/bim-cl
 
 A short walkthrough of the dashboard, mobile view, and 3D viewer:
 
-[`assets/videos/demo-walkthrough.mp4`](assets/videos/demo-walkthrough.mp4)
+![BIM Cloud Pipeline — demo walkthrough](assets/videos/demo-walkthrough.gif)
+
+**▶ Live demo:** [studio-public-demos.github.io/bim-cloud-pipeline-showcase](https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/)
 
 ## Project Screenshots
 
