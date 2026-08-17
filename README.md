@@ -44,17 +44,19 @@ A single pipeline removes that friction:
 ## Live Demo
 
 **▶ Try the live pipeline:** [bim-cloud-pipeline.onrender.com](https://bim-cloud-pipeline.onrender.com/) —
-run the bundled Architecture and Structural samples and watch them convert to
-GLB/GLTF + structured metadata in real time.
+upload your own Revit (.rvt) / IFC (.ifc) / glTF (.glb) file, or run the bundled
+Architecture and Structural samples, and watch them convert to GLB/GLTF +
+structured metadata in real time.
 
 **Instant static preview (no backend):** [studio-public-demos.github.io/bim-cloud-pipeline-showcase](https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/)
 
 The full pipeline (upload → process → track → download) runs in the
 [implementation repository](https://github.com/studio-public-demos/bim-cloud-pipeline).
 
-> **Public demo mode:** the live deployment runs in `PUBLIC_DEMO_MODE` — arbitrary
-> uploads are disabled, only the bundled samples are exposed, job history is scoped
-> per visitor, and jobs/outputs are auto-expired. See *Public safety* below.
+> **Public demo:** the live deployment runs in `PUBLIC_DEMO_MODE` — uploads stay
+> **enabled** (bounded by file-size/concurrency/rate limits), job history is scoped
+> per visitor, jobs/outputs are auto-expired, and the dashboard warns never to
+> upload confidential models. See *Public safety* below.
 
 ## Demo Video
 
@@ -188,14 +190,14 @@ To be precise about what "works": this distinguishes what is **live-validated** 
 
 ## Public safety
 
-The live deployment is hardened for public visitors:
+The live deployment is hardened for public visitors while keeping a real POC
+experience:
 
-- **`PUBLIC_DEMO_MODE`** — disables arbitrary uploads and exposes only the bundled
-  Architecture and Structural samples.
+- **Uploads enabled with limits** — visitors can upload `.ifc`/`.rvt`/`.gltf`/`.glb`
+  (bounded by file-size, concurrency, and rate limits). Samples-only mode is
+  available via `DISABLE_UPLOADS=1`.
 - **Per-visitor job history** — visitors cannot see each other's jobs, downloads, or
   comparisons.
-- **Limits** — file-size, concurrency, and rate limits are enforced before public
-  uploads could be re-enabled.
 - **TTL cleanup** — finished jobs and outputs are automatically deleted.
 - **Visible warning** — the dashboard warns visitors never to upload confidential or
   proprietary models.
