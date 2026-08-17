@@ -3,7 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BIM Cloud Pipeline — Live Demo</title>
+  <title>BIM Cloud Pipeline — Revit & IFC → GLB/GLTF + structured metadata</title>
+  <meta name="description" content="BIM Cloud Pipeline turns Revit & IFC models into web-ready GLB/GLTF 3D assets and structured metadata JSON — one cloud pipeline, one API. 92% smaller GLB, live 3D viewer, metadata explorer, and model compare." />
+  <meta name="author" content="NebulaCloud Studio" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="NebulaCloud Studio" />
+  <meta property="og:title" content="BIM Cloud Pipeline — Revit & IFC → GLB/GLTF + metadata" />
+  <meta property="og:description" content="One cloud pipeline that converts heavyweight BIM into lightweight GLB/GLTF 3D assets plus structured metadata JSON — for web, mobile, AR/VR and digital twins." />
+  <meta property="og:image" content="https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/assets/social-preview.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="BIM Cloud Pipeline — Revit & IFC → GLB/GLTF + metadata" />
+  <meta name="twitter:description" content="One cloud pipeline that converts heavyweight BIM into lightweight GLB/GLTF 3D assets plus structured metadata JSON." />
+  <meta name="twitter:image" content="https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/assets/social-preview.png" />
+
+  <link rel="canonical" href="https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233b82f6'/><text x='50' y='68' font-size='52' text-anchor='middle' fill='white' font-family='Arial'>◨</text></svg>" />
   <script type="importmap">
     { "imports": {
@@ -17,32 +37,75 @@
       --ok:#34d399; --warn:#fbbf24; --err:#f87171;
     }
     * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
     body { margin:0; background:var(--bg); color:var(--text);
-      font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; line-height:1.5; }
-    header { border-bottom:1px solid var(--border); padding:14px 20px;
-      background:linear-gradient(180deg,#0e1522,#0b0f17); display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+      font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; line-height:1.6; }
+    a { color:var(--accent); text-decoration:none; }
+    code { background:var(--panel2); padding:1px 6px; border-radius:5px; font-size:13px; color:var(--accent2); }
+    .wrap { max-width:1080px; margin:0 auto; padding:0 20px; }
+
+    /* Header */
+    header { border-bottom:1px solid var(--border); background:linear-gradient(180deg,#0e1522,#0b0f17);
+      padding:14px 20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; position:sticky; top:0; z-index:20; }
     .logo { display:inline-grid; place-items:center; width:36px; height:36px; border-radius:9px;
       background:linear-gradient(135deg,var(--accent),var(--accent2)); font-size:20px; color:#06121f; font-weight:700; }
     .brand { font-size:16px; font-weight:700; } .brand em { color:var(--accent2); font-style:normal; }
     .tagline { color:var(--muted); font-size:13px; }
     .live-btn { margin-left:auto; display:inline-flex; align-items:center; gap:6px;
       background:linear-gradient(135deg,var(--accent),#2563eb); color:#fff;
-      text-decoration:none; font-size:13px; font-weight:700; padding:9px 14px;
-      border-radius:8px; min-height:40px; white-space:nowrap; }
+      text-decoration:none; font-size:13px; font-weight:700; padding:10px 15px; border-radius:8px; min-height:40px; white-space:nowrap; }
     .live-btn:hover { filter:brightness(1.1); }
-    main { display:grid; grid-template-columns:1.15fr .85fr; gap:16px; padding:16px 20px 40px; max-width:1280px; margin:0 auto; }
-    .card { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:16px; }
-    .viewer { position:relative; aspect-ratio:4/3; background:radial-gradient(circle at 50% 30%,#1c2942,#0c1119); border-radius:10px; overflow:hidden; min-height:300px; }
-    .viewer canvas { display:block; }
+
+    /* Hero */
+    .hero { text-align:center; padding:64px 20px 48px; max-width:880px; margin:0 auto; }
+    .eyebrow { display:inline-block; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase;
+      color:var(--accent2); border:1px solid var(--border); border-radius:999px; padding:5px 14px; margin-bottom:18px; }
+    .hero h1 { font-size:clamp(34px,6vw,56px); line-height:1.08; margin:0 0 18px; letter-spacing:-0.02em; }
+    .hero h1 em { color:var(--accent2); font-style:normal; }
+    .hero .sub { color:var(--muted); font-size:18px; max-width:640px; margin:0 auto 28px; }
+    .cta-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+    .btn { display:inline-flex; align-items:center; gap:8px; border-radius:9px; padding:13px 20px;
+      font-size:15px; font-weight:700; text-decoration:none; min-height:48px; cursor:pointer; border:1px solid var(--border); }
+    .btn-primary { background:linear-gradient(135deg,var(--accent),#2563eb); border-color:transparent; color:#fff; }
+    .btn-ghost { background:var(--panel); color:var(--text); }
+    .btn:hover { filter:brightness(1.1); }
+    .proof { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; max-width:760px; margin:40px auto 0; }
+    .proof .stat { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:18px 14px; }
+    .proof .v { font-size:30px; font-weight:800; letter-spacing:-0.02em;
+      background:linear-gradient(90deg,var(--accent),var(--accent2)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .proof .k { color:var(--muted); font-size:13px; margin-top:4px; }
+
+    /* Sections */
+    section.block { padding:56px 0; border-top:1px solid var(--border); }
+    .block h2 { font-size:clamp(24px,4vw,34px); margin:0 0 12px; letter-spacing:-0.01em; }
+    .block .lead { color:var(--muted); font-size:16px; max-width:720px; }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .grid-2 > *, .compare-viewers > *, .steps > *, .use-grid > *, .caps > *, .proof > * { min-width:0; }
+    .card { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:20px; min-width:0; }
+
+    /* How it works */
+    .steps { counter-reset:step; display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:28px; }
+    .step { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:18px 16px; }
+    .step .n { display:inline-grid; place-items:center; width:30px; height:30px; border-radius:8px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2)); color:#06121f; font-weight:800; font-size:15px; margin-bottom:12px; }
+    .step h3 { font-size:15px; margin:0 0 6px; }
+    .step p { color:var(--muted); font-size:13px; margin:0; }
+    .diagram { margin-top:28px; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:var(--panel); }
+    .diagram img { width:100%; height:auto; display:block; }
+
+    /* Result / viewers */
+    .viewer { position:relative; aspect-ratio:4/3; background:radial-gradient(circle at 50% 30%,#1c2942,#0c1119);
+      border-radius:10px; overflow:hidden; min-height:280px; width:100%; }
+    .viewer canvas { display:block; max-width:100%; height:auto; }
     .viewer .hint { position:absolute; left:10px; bottom:8px; font-size:11px; color:var(--muted);
       background:rgba(10,15,25,.6); padding:3px 8px; border-radius:6px; pointer-events:none; }
     .placeholder { position:absolute; inset:0; display:grid; place-items:center; color:var(--muted); font-size:14px; }
     .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px; }
     .stat { background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:10px 12px; }
     .stat .k { font-size:11.5px; color:var(--muted); } .stat .v { font-size:22px; font-weight:700; margin-top:2px; }
-    h2 { font-size:15px; margin:0 0 10px; }
+    h3.h { font-size:15px; margin:0 0 10px; }
     .bars { display:flex; flex-direction:column; gap:6px; margin-bottom:16px; }
-    .bar-row { display:grid; grid-template-columns:90px 1fr 34px; gap:8px; align-items:center; font-size:12.5px; }
+    .bar-row { display:grid; grid-template-columns:100px 1fr 36px; gap:8px; align-items:center; font-size:12.5px; }
     .bar-track { background:var(--panel2); border-radius:6px; height:14px; overflow:hidden; }
     .bar-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:6px; }
     .bar-num { color:var(--muted); text-align:right; }
@@ -55,39 +118,243 @@
       border:1px solid var(--border); border-radius:9px; padding:8px 11px; font-size:12.5px; }
     .el .n { font-weight:600; } .el .m { color:var(--muted); font-size:11.5px; }
     .el .cat { color:var(--accent2); font-size:11px; text-transform:uppercase; letter-spacing:.5px; }
+
+    /* Comparison */
+    .compare-viewers { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:20px; }
+    .compare-label { font-size:13px; font-weight:700; color:var(--accent2); padding:4px 2px; }
+    .compare-label .sub { color:var(--muted); font-weight:400; font-size:12px; }
+    table.diff { width:100%; border-collapse:collapse; font-size:13px; margin-top:16px; }
+    table.diff th, table.diff td { border:1px solid var(--border); padding:8px 10px; text-align:left; }
+    table.diff th { background:var(--panel2); color:var(--muted); font-weight:600; }
+    .pos { color:var(--ok); font-weight:700; } .neg { color:var(--err); font-weight:700; }
+    .zero { color:var(--muted); }
+
+    /* Use cases */
+    .use-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:24px; }
+    .use { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:18px; }
+    .use h3 { font-size:15px; margin:0 0 6px; }
+    .use p { color:var(--muted); font-size:13.5px; margin:0; }
+
+    /* Studio capabilities */
+    .caps { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-top:24px; }
+    .cap { display:flex; gap:10px; align-items:flex-start; background:var(--panel);
+      border:1px solid var(--border); border-radius:12px; padding:14px 16px; }
+    .cap .tick { color:var(--ok); font-weight:700; }
+    .cap p { margin:0; font-size:13.5px; color:var(--muted); }
+    .cap strong { color:var(--text); }
+
+    /* CTA */
+    .cta { text-align:center; background:linear-gradient(180deg,#101a2c,#0b0f17);
+      border:1px solid var(--border); border-radius:20px; padding:48px 24px; }
+    .cta h2 { margin:0 0 10px; }
+    .cta p { color:var(--muted); max-width:560px; margin:0 auto 24px; }
+
     footer { text-align:center; padding:18px; opacity:.55; font-size:12px; border-top:1px solid var(--border); }
-    footer a { color:var(--accent); text-decoration:none; }
-    @media (max-width:820px) { main { grid-template-columns:1fr; padding:12px 12px 40px; } .stats { grid-template-columns:repeat(3,1fr); } }
+    footer a { color:var(--accent); }
+
+    .note { background:#12233a; border:1px solid #24507c; border-radius:10px; padding:12px 14px;
+      color:#a8c8ec; font-size:13px; margin-top:16px; }
+    .note strong { color:#d3e6ff; }
+
+    @media (max-width:820px) {
+      .steps { grid-template-columns:repeat(2,1fr); }
+      .grid-2, .compare-viewers, .caps { grid-template-columns:1fr; }
+      .use-grid { grid-template-columns:1fr 1fr; }
+      .proof { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:560px) {
+      .proof { grid-template-columns:1fr; }
+      .use-grid { grid-template-columns:1fr; }
+      .steps { grid-template-columns:1fr; }
+      .stats { grid-template-columns:repeat(3,1fr); }
+      .hero { padding:40px 16px 32px; }
+    }
   </style>
 </head>
 <body>
   <header>
     <span class="logo">◨</span>
     <span class="brand">BIM Cloud <em>Pipeline</em></span>
-    <span class="tagline">Revit &amp; IFC → optimised GLB/GLTF + structured metadata · live demo</span>
-    <a class="live-btn" href="https://bim-cloud-pipeline.onrender.com/" target="_blank" rel="noopener">▶ Launch full pipeline</a>
+    <span class="tagline">Revit &amp; IFC → optimised GLB/GLTF + structured metadata</span>
+    <a class="live-btn" href="https://bim-cloud-pipeline.onrender.com/" target="_blank" rel="noopener">▶ Launch the live pipeline</a>
   </header>
 
-  <main>
-    <section class="card">
-      <h2>3D derivative — sample model (GLB)</h2>
-      <div class="viewer" id="viewer">
-        <div class="placeholder" id="ph">Loading model…</div>
-        <div class="hint">drag to orbit · scroll to zoom · right-drag to pan</div>
-      </div>
-    </section>
+  <!-- Hero -->
+  <section class="hero">
+    <span class="eyebrow">Public showcase · built with NebulaCloud Studio</span>
+    <h1>Turn <em>Revit &amp; IFC</em> into web-ready 3D + structured metadata</h1>
+    <p class="sub">One cloud pipeline converts heavyweight BIM files into lightweight
+      <strong>GLB/GLTF</strong> 3D assets and <strong>metadata JSON</strong> — for web, mobile,
+      AR/VR, XR and digital-twin applications.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://bim-cloud-pipeline.onrender.com/" target="_blank" rel="noopener">▶ Run the live pipeline</a>
+      <a class="btn btn-ghost" href="#result">Explore the sample ↓</a>
+    </div>
+    <div class="proof">
+      <div class="stat"><div class="v">~92%</div><div class="k">smaller — 226 KB IFC → 17 KB GLB</div></div>
+      <div class="stat"><div class="v">270</div><div class="k">triangles from a 19-element building</div></div>
+      <div class="stat"><div class="v">1 API</div><div class="k">upload → process → track → download</div></div>
+    </div>
+  </section>
 
-    <section class="card">
-      <h2>Structured metadata (JSON)</h2>
-      <div class="stats" id="stats"></div>
-      <div class="bars" id="bars"></div>
-      <div class="filters" id="filters"></div>
-      <div class="elements" id="elements"></div>
-    </section>
-  </main>
+  <!-- Problem -->
+  <section class="block" id="problem">
+    <div class="wrap">
+      <h2>The problem</h2>
+      <p class="lead">BIM models live inside heavy, desktop-bound formats. Direct Revit/IFC support on the web,
+        on mobile, and inside AR/VR headsets is difficult, slow, or unavailable — so teams spend significant
+        engineering effort just to extract a viewable model and its data before they can build anything.</p>
+    </div>
+  </section>
+
+  <!-- Pipeline / How it works -->
+  <section class="block" id="pipeline">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="lead">A single, staged pipeline removes that friction.</p>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><h3>Upload</h3><p>Revit (.rvt), IFC (.ifc) or glTF/GLB via dashboard or REST.</p></div>
+        <div class="step"><span class="n">2</span><h3>Process</h3><p>Geometry is parsed and optimised; semantics are extracted.</p></div>
+        <div class="step"><span class="n">3</span><h3>Track</h3><p>Live job status, stage-by-stage progress and processing logs.</p></div>
+        <div class="step"><span class="n">4</span><h3>Download</h3><p>Optimised GLB/GLTF plus structured metadata JSON.</p></div>
+        <div class="step"><span class="n">5</span><h3>Integrate</h3><p>Build on the REST API, or compare two models side-by-side.</p></div>
+      </div>
+      <div class="diagram">
+        <img src="assets/diagrams/conceptual-architecture.svg" alt="BIM Cloud Pipeline conceptual architecture: Revit and IFC in, GLB/GLTF and metadata JSON out" loading="lazy" />
+      </div>
+      <div class="note"><strong>Revit route:</strong> <code>.rvt</code> → Autodesk APS Model Derivative (an IFC derivative)
+        → the native IFC pipeline → GLB/GLTF + metadata. Without APS credentials the pipeline falls back to a bundled
+        representative model and flags it clearly.</div>
+    </div>
+  </section>
+
+  <!-- Result -->
+  <section class="block" id="result">
+    <div class="wrap">
+      <h2>The result</h2>
+      <p class="lead">A self-contained, optimised <strong>3D derivative</strong> and a structured
+        <strong>metadata JSON</strong> — both produced from the same parse, so geometry and semantics stay consistent.</p>
+      <div class="grid-2" style="margin-top:24px;">
+        <div class="card">
+          <h3 class="h">3D derivative — model.glb</h3>
+          <div class="viewer" id="viewer">
+            <div class="placeholder" id="ph">Loading model…</div>
+            <div class="hint">drag to orbit · scroll to zoom · right-drag to pan</div>
+          </div>
+          <p class="lead" style="margin-top:12px; font-size:13px;">17 KB binary glTF · 270 triangles · metres · per-element colours.
+            Opens in Three.js, <code>&lt;model-viewer&gt;</code>, Blender, Unity/Unreal, AR Quick Look.</p>
+        </div>
+        <div class="card">
+          <h3 class="h">Structured metadata — metadata.json</h3>
+          <div class="stats" id="stats"></div>
+          <div class="bars" id="bars"></div>
+          <div class="filters" id="filters"></div>
+          <div class="elements" id="elements"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GLB vs metadata -->
+  <section class="block" id="glb-vs-metadata">
+    <div class="wrap">
+      <h2>GLB vs metadata.json — why two outputs?</h2>
+      <div class="grid-2" style="margin-top:20px;">
+        <div class="card">
+          <h3 class="h">model.glb / model.gltf</h3>
+          <p class="lead">The <strong>visual</strong> mesh. Analytical volumes (spaces, zones) and
+            geo-reference proxies are excluded so the model renders cleanly. Units are metres
+            (glTF standard), with per-element material colours.</p>
+        </div>
+        <div class="card">
+          <h3 class="h">metadata.json</h3>
+          <p class="lead">The <strong>semantic</strong> record. Elements carry GlobalId, category,
+            material, property sets (<code>Pset_*</code>), quantities (<code>Qto_*</code>) and spatial
+            containment — everything you need to query the building, not just look at it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison -->
+  <section class="block" id="comparison">
+    <div class="wrap">
+      <h2>Architecture vs Structural</h2>
+      <p class="lead">Run both bundled buildingSMART samples and compare them. Same house, two discipline views —
+        the structural model swaps walls/slabs for beams and footings.</p>
+      <div class="compare-viewers">
+        <div>
+          <div class="compare-label">Architecture <span class="sub">— 19 elements · 270-triangle GLB · 17 KB</span></div>
+          <div class="viewer" id="viewerA"><div class="placeholder">Loading…</div><div class="hint">drag to orbit · scroll to zoom</div></div>
+        </div>
+        <div>
+          <div class="compare-label">Structural <span class="sub">— 18 elements · 712-triangle GLB · 43 KB</span></div>
+          <div class="viewer" id="viewerB"><div class="placeholder">Loading…</div><div class="hint">drag to orbit · scroll to zoom</div></div>
+        </div>
+      </div>
+      <table class="diff">
+        <thead><tr><th>Category</th><th>Architecture</th><th>Structural</th><th>Δ</th></tr></thead>
+        <tbody>
+          <tr><td>beam</td><td>0</td><td>6</td><td class="pos">+6</td></tr>
+          <tr><td>wall</td><td>4</td><td>4</td><td class="zero">—</td></tr>
+          <tr><td>slab</td><td>3</td><td>0</td><td class="neg">−3</td></tr>
+          <tr><td>footing</td><td>0</td><td>1</td><td class="pos">+1</td></tr>
+          <tr><td>discrete accessory</td><td>0</td><td>2</td><td class="pos">+2</td></tr>
+          <tr><td>chimney · roof</td><td>2</td><td>2</td><td class="zero">—</td></tr>
+        </tbody>
+      </table>
+      <p class="lead" style="margin-top:14px; font-size:13.5px;">Element diff: <strong>4 common · 14 added · 15 removed</strong>
+        across the two discipline models — the same diff is available via <code>GET /api/compare/{idA}/{idB}</code>.</p>
+    </div>
+  </section>
+
+  <!-- Use cases -->
+  <section class="block" id="use-cases">
+    <div class="wrap">
+      <h2>Use cases</h2>
+      <div class="use-grid">
+        <div class="use"><h3>Web model review</h3><p>A review portal for project stakeholders, no BIM desktop required.</p></div>
+        <div class="use"><h3>Mobile field apps</h3><p>Lightweight glTF renders on constrained devices.</p></div>
+        <div class="use"><h3>AR / VR walkthroughs</h3><p>Import a building straight from Revit into a headset.</p></div>
+        <div class="use"><h3>Digital twins</h3><p>Pair geometry with live sensor data keyed by element GlobalId.</p></div>
+        <div class="use"><h3>API normalisation</h3><p>Normalise mixed-format BIM input into one consistent output.</p></div>
+        <div class="use"><h3>Compare &amp; diff</h3><p>Side-by-side 3D plus an element/category diff between disciplines.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Built with NebulaCloud Studio -->
+  <section class="block" id="studio">
+    <div class="wrap">
+      <h2>Built with NebulaCloud Studio</h2>
+      <p class="lead">This pipeline — parser, derivative builder, REST API, dashboard, docs, tests, and this showcase —
+        was designed, built, and verified with NebulaCloud Studio.</p>
+      <div class="caps">
+        <div class="cap"><span class="tick">✓</span><p><strong>Dependency-free IFC parser</strong> — real geometry + semantics from raw STEP, no BIM runtime.</p></div>
+        <div class="cap"><span class="tick">✓</span><p><strong>Optimised derivatives</strong> — millimetre→metre conversion, per-element vertex colours, GLB + GLTF.</p></div>
+        <div class="cap"><span class="tick">✓</span><p><strong>REST API</strong> — upload, job tracking, downloads, and model compare.</p></div>
+        <div class="cap"><span class="tick">✓</span><p><strong>Credential-gated adapters</strong> — Autodesk APS (Revit) and S3 storage.</p></div>
+        <div class="cap"><span class="tick">✓</span><p><strong>Public-demo hardening</strong> — uploads disabled, per-visitor history, limits + TTL cleanup.</p></div>
+        <div class="cap"><span class="tick">✓</span><p><strong>Verified end-to-end</strong> — real buildingSMART samples, automated tests, responsive UI.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="block" id="contact">
+    <div class="wrap">
+      <div class="cta">
+        <h2>Discuss your BIM workflow</h2>
+        <p>Want a BIM-to-web pipeline for your team, or a similar custom AEC application?
+          Tell us what you're trying to ship and we'll map it to a pipeline.</p>
+        <a class="btn btn-primary" href="https://nebulacloud.studio" target="_blank" rel="noopener">Discuss your BIM workflow →</a>
+      </div>
+    </div>
+  </section>
 
   <footer>
     <a href="https://nebulacloud.studio" target="_blank" rel="noopener">Built with NebulaCloud Studio</a>
+    · <a href="https://github.com/studio-public-demos/bim-cloud-pipeline-showcase" target="_blank" rel="noopener">View on GitHub</a>
   </footer>
 
   <script type="module">
@@ -95,55 +362,65 @@
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
+    const ARCH_MODEL = 'assets/outputs/sample-model.glb';
+    const STRUCT_MODEL = 'assets/outputs/structural-model.glb';
     const METADATA_URL = 'assets/outputs/sample-metadata.json';
-    const MODEL_URL = 'assets/outputs/sample-model.glb';
 
-    // ---- 3D viewer -------------------------------------------------------
-    const container = document.getElementById('viewer');
-    const ph = document.getElementById('ph');
-    const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    container.appendChild(renderer.domElement);
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
-    scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x1a2230, 1.1));
-    const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(6,10,6); scene.add(key);
-    const fill = new THREE.DirectionalLight(0x9db4d6, 0.7); fill.position.set(-5,4,-4); scene.add(fill);
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; controls.dampingFactor = 0.08;
-    function resize() {
-      const w = container.clientWidth, h = container.clientHeight;
-      if (!w || !h) return;
-      renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize', resize); resize();
-    (function animate(){ requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); })();
-
-    new GLTFLoader().loadAsync(MODEL_URL).then((gltf) => {
-      gltf.scene.traverse((o) => { if (o.isMesh) {
-        o.castShadow = o.receiveShadow = true;
-        if (o.geometry && o.geometry.getAttribute('color')) {
-          (Array.isArray(o.material)?o.material:[o.material]).forEach(m => { m.vertexColors = true; });
+    function makeViewer(container) {
+      const ph = container.querySelector('.placeholder');
+      const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+      scene.add(new THREE.HemisphereLight(0xdfe8ff, 0x1a2230, 1.1));
+      const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(6,10,6); scene.add(key);
+      const fill = new THREE.DirectionalLight(0x9db4d6, 0.7); fill.position.set(-5,4,-4); scene.add(fill);
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true; controls.dampingFactor = 0.08;
+      function resize() {
+        const w = container.clientWidth, h = container.clientHeight;
+        if (!w || !h) return;
+        renderer.setSize(w, h); camera.aspect = w / h; camera.updateProjectionMatrix();
+      }
+      window.addEventListener('resize', resize); resize();
+      (function animate(){ requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); })();
+      async function load(url) {
+        try {
+          const gltf = await new GLTFLoader().loadAsync(url);
+          gltf.scene.traverse((o) => { if (o.isMesh) {
+            o.castShadow = o.receiveShadow = true;
+            if (o.geometry && o.geometry.getAttribute('color')) {
+              (Array.isArray(o.material)?o.material:[o.material]).forEach(m => { m.vertexColors = true; });
+            }
+          }});
+          scene.add(gltf.scene);
+          const box = new THREE.Box3().setFromObject(gltf.scene);
+          const size = box.getSize(new THREE.Vector3());
+          const center = box.getCenter(new THREE.Vector3());
+          const d = Math.max(size.x, size.y, size.z) * 1.9;
+          camera.position.copy(center).add(new THREE.Vector3(1,0.8,1).normalize().multiplyScalar(d));
+          controls.target.copy(center);
+          if (ph) ph.style.display = 'none';
+        } catch (e) {
+          if (ph) ph.textContent = 'Could not load model: ' + e.message;
         }
-      }});
-      scene.add(gltf.scene);
-      const box = new THREE.Box3().setFromObject(gltf.scene);
-      const size = box.getSize(new THREE.Vector3());
-      const center = box.getCenter(new THREE.Vector3());
-      const d = Math.max(size.x, size.y, size.z) * 1.9;
-      camera.position.copy(center).add(new THREE.Vector3(1,0.8,1).normalize().multiplyScalar(d));
-      controls.target.copy(center);
-      ph.style.display = 'none';
-    }).catch((e) => { ph.textContent = 'Could not load model: ' + e.message; });
+      }
+      return { load };
+    }
 
-    // ---- metadata --------------------------------------------------------
-    async function renderMeta() {
+    makeViewer(document.getElementById('viewer')).load(ARCH_MODEL);
+    makeViewer(document.getElementById('viewerA')).load(ARCH_MODEL);
+    makeViewer(document.getElementById('viewerB')).load(STRUCT_MODEL);
+
+    function esc(s) { return String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    (async function renderMeta() {
       try {
         const meta = await (await fetch(METADATA_URL)).json();
         const st = meta.stats || {};
-        const stats = document.getElementById('stats');
         const fmt = (n) => Number(n ?? 0).toLocaleString();
-        stats.innerHTML = `
+        document.getElementById('stats').innerHTML = `
           <div class="stat"><div class="k">Elements</div><div class="v">${fmt(st.totalElements)}</div></div>
           <div class="stat"><div class="k">Triangles</div><div class="v">${fmt(st.totalTriangles)}</div></div>
           <div class="stat"><div class="k">Vertices</div><div class="v">${fmt(st.totalVertices)}</div></div>`;
@@ -169,7 +446,7 @@
       } catch (e) {
         document.getElementById('stats').textContent = 'Metadata: ' + e.message;
       }
-    }
+    })();
     function renderElements(elements, cat) {
       const list = (elements || []).filter((e) => cat === 'all' || e.category === cat);
       document.getElementById('elements').innerHTML = list.map((e) => `
@@ -178,8 +455,6 @@
           <span class="m">${esc(e.material || '')}${e.containedIn ? ' · ' + esc(e.containedIn) : ''}</span></span>
           <span class="m">${esc(e.ifcType || '')}</span></div>`).join('') || '<div class="m">No elements</div>';
     }
-    function esc(s) { return String(s ?? '').replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-    renderMeta();
   </script>
 </body>
 </html>

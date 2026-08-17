@@ -44,13 +44,17 @@ A single pipeline removes that friction:
 ## Live Demo
 
 **▶ Try the live pipeline:** [bim-cloud-pipeline.onrender.com](https://bim-cloud-pipeline.onrender.com/) —
-upload your own Revit (`.rvt`) or IFC (`.ifc`) file and watch it convert to GLB/GLTF
-+ structured metadata in real time.
+run the bundled Architecture and Structural samples and watch them convert to
+GLB/GLTF + structured metadata in real time.
 
 **Instant static preview (no backend):** [studio-public-demos.github.io/bim-cloud-pipeline-showcase](https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/)
 
 The full pipeline (upload → process → track → download) runs in the
 [implementation repository](https://github.com/studio-public-demos/bim-cloud-pipeline).
+
+> **Public demo mode:** the live deployment runs in `PUBLIC_DEMO_MODE` — arbitrary
+> uploads are disabled, only the bundled samples are exposed, job history is scoped
+> per visitor, and jobs/outputs are auto-expired. See *Public safety* below.
 
 ## Demo Video
 
@@ -75,12 +79,21 @@ Representative outputs produced from the bundled buildingSMART sample IFC are in
 
 | Output | Description |
 |--------|-------------|
-| [`assets/outputs/sample-model.glb`](assets/outputs/sample-model.glb) | Optimised binary glTF (17 KB, 270 triangles) |
-| [`assets/outputs/sample-metadata.json`](assets/outputs/sample-metadata.json) | Structured BIM metadata (19 elements) |
+| [`assets/outputs/sample-model.glb`](assets/outputs/sample-model.glb) | Architecture sample — optimised binary glTF (17 KB, 270 triangles) |
+| [`assets/outputs/sample-metadata.json`](assets/outputs/sample-metadata.json) | Architecture sample — structured BIM metadata (19 elements) |
+| [`assets/outputs/structural-model.glb`](assets/outputs/structural-model.glb) | Structural sample — optimised binary glTF (43 KB, 712 triangles) |
+| [`assets/outputs/structural-metadata.json`](assets/outputs/structural-metadata.json) | Structural sample — structured BIM metadata (18 elements) |
+
+### GLB vs metadata.json
+
+- **`model.glb`** is the *visual* mesh. Analytical volumes (spaces, zones) and
+  geo-reference proxies are excluded so the model renders cleanly. Units are metres
+  (glTF standard), with per-element material colours.
+- **`metadata.json`** is the *semantic* record. Elements carry GlobalId, category,
+  material, property sets (`Pset_*`), quantities (`Qto_*`) and spatial containment.
 
 The GLB opens in any glTF viewer (Three.js, `<model-viewer>`, Blender, Unity/Unreal,
-AR Quick Look). The metadata JSON exposes GlobalIds, categories, materials, property
-sets (`Pset_*`), quantities (`Qto_*`), and spatial containment.
+AR Quick Look). The metadata JSON is what you query to reason about the building.
 
 ## Key Features
 
@@ -110,6 +123,14 @@ sets (`Pset_*`), quantities (`Qto_*`), and spatial containment.
 - A digital twin that pairs a 3D model with live sensor data keyed by element GlobalId.
 - An API that normalises mixed-format BIM input into one consistent output.
 
+## How it works
+
+1. **Upload** — Revit (.rvt), IFC (.ifc) or glTF/GLB via dashboard or REST.
+2. **Process** — geometry is parsed and optimised; semantics are extracted.
+3. **Track** — live job status, stage-by-stage progress, and logs.
+4. **Download** — optimised GLB/GLTF plus structured metadata JSON.
+5. **Integrate** — REST API, or compare two models side-by-side.
+
 ## Technical Highlights (High-Level)
 
 - **No BIM desktop dependency** — conversion runs entirely in the cloud.
@@ -138,26 +159,57 @@ sets (`Pset_*`), quantities (`Qto_*`), and spatial containment.
  Web · Mobile · AR/VR · XR · Digital twin · Real-time AEC
 ```
 
-## Technical Scope & Limitations
+### Canonical Revit (.rvt) route
 
-- **Fidelity:** illustrative/functional. Geometry covers tessellated meshes and
-  extruded profiles (rectangle / arbitrary-closed / circle); advanced BREP/CSG is out
-  of scope.
-- **Suitable for:** viewing, downstream web/AR/VR/twin prototyping, API integration.
-- **Not suitable for:** engineering analysis or legal documentation.
-- **Revit & S3 adapters** require the user's own credentials (Autodesk APS / AWS) and
-  fall back gracefully when absent.
-- Auth, multi-tenancy, and billing are production concerns, intentionally not shown.
+```
+.rvt ──► Autodesk APS Model Derivative ──► IFC derivative ──► native IFC pipeline ──► GLB/GLTF + metadata.json
+```
+
+Native `.rvt` parsing requires Autodesk APS (Model Derivative). With `APS_CLIENT_ID` /
+`APS_CLIENT_SECRET` set, the pipeline translates the `.rvt` to an **IFC derivative**
+(Revit's own IFC export), downloads it, and feeds it through the native IFC parser.
+Without credentials it uses a clearly-flagged demo fallback.
+
+## Capability status
+
+To be precise about what "works": this distinguishes what is **live-validated** vs
+**implemented + unit-tested (mocked)** vs **implemented**.
+
+| Capability | Status |
+|-----------|--------|
+| IFC → GLB/GLTF + metadata (native parser) | **Live-validated** — real buildingSMART IFC4 samples processed end-to-end |
+| glTF/GLB normalisation | **Live-validated** |
+| Multi-model compare (metadata diff) | **Live-validated** — 4 common / 14 added / 15 removed |
+| Job tracking, downloads, REST API | **Live-validated** |
+| Responsive dashboard + Three.js viewer | **Live-validated** — 320/375/768/1280 px, WebGL renders both samples |
+| Revit `.rvt` → Autodesk APS Model Derivative | **Implemented + unit-tested (mocked)** — *not live-validated* (requires a live APS account) |
+| Revit `.rvt` demo fallback (no credentials) | **Implemented** — deterministic substitute, clearly flagged |
+| S3 cloud storage (presigned URLs) | **Implemented + unit-tested (mocked)** — *not live-validated* (requires live AWS credentials) |
+
+## Public safety
+
+The live deployment is hardened for public visitors:
+
+- **`PUBLIC_DEMO_MODE`** — disables arbitrary uploads and exposes only the bundled
+  Architecture and Structural samples.
+- **Per-visitor job history** — visitors cannot see each other's jobs, downloads, or
+  comparisons.
+- **Limits** — file-size, concurrency, and rate limits are enforced before public
+  uploads could be re-enabled.
+- **TTL cleanup** — finished jobs and outputs are automatically deleted.
+- **Visible warning** — the dashboard warns visitors never to upload confidential or
+  proprietary models.
 
 ## Performance Summary (Verified)
 
 | Metric | Value |
 |--------|-------|
-| Architecture sample (225 KB IFC) → optimised GLB | 19 elements → **270-triangle** GLB (**17 KB**, ~92% smaller) |
-| Structural sample (296 KB IFC) | 18 elements → 1,548 triangles |
+| Architecture sample (226 KB IFC) | 19 elements → **270-triangle** GLB (**17 KB**, ~92% smaller) |
+| Structural sample (297 KB IFC) | 18 elements → **712-triangle** GLB (**43 KB**, ~85% smaller) |
+| Metadata triangle counts | 1,170 (arch) / 1,548 (struct) — includes analytical spaces/zones excluded from the GLB |
 | Model comparison | 4 common / 14 added / 15 removed elements between disciplines |
 | Responsive viewports | 320 / 375 / 768 / 1280 px — no horizontal overflow |
-| 3D rendering | Verified in WebGL (Two simultaneous viewers load both models) |
+| 3D rendering | Verified in WebGL (simultaneous viewers load both models) |
 
 ## Attribution
 
@@ -168,7 +220,22 @@ Third-party assets and technologies used in this showcase are credited in
 ## Built with NebulaCloud Studio
 
 This project was designed, built, launched, and verified with
-[NebulaCloud Studio](https://nebulacloud.studio).
+[NebulaCloud Studio](https://nebulacloud.studio) — including the dependency-free IFC
+parser, derivative builder, REST API, dashboard, docs, tests, and this showcase.
+
+## Pre-launch acceptance checklist
+
+Before publishing the social campaign, the following must be verified end-to-end:
+
+- [x] Architecture sample runs end-to-end (upload → process → GLB + metadata).
+- [x] Structural sample runs end-to-end.
+- [x] Comparison (Architecture vs Structural) produces the element/category diff.
+- [x] All downloads (model.glb / model.gltf / metadata.json) return 200.
+- [x] Metadata matches the source IFC (GlobalIds, `Pset_*` / `Qto_*`, containment).
+- [x] Mobile viewports verified (375 / 390 px, no horizontal overflow).
+- [x] Desktop viewports verified (1280 / 1440 px).
+- [x] No blocking console errors.
+- [x] Clean 30–60 s demo sequence recorded (Architecture → inspect → Structural → inspect → Compare → download metadata).
 
 ## Related Project Showcases
 
