@@ -168,7 +168,8 @@ AR Quick Look). The metadata JSON is what you query to reason about the building
 Native `.rvt` parsing requires Autodesk APS (Model Derivative). With `APS_CLIENT_ID` /
 `APS_CLIENT_SECRET` set, the pipeline translates the `.rvt` to an **IFC derivative**
 (Revit's own IFC export), downloads it, and feeds it through the native IFC parser.
-Without credentials it uses a clearly-flagged demo fallback.
+Without credentials the job fails with a clear error — an uploaded file is never
+replaced by a bundled sample.
 
 ## Capability status
 
@@ -183,7 +184,6 @@ To be precise about what "works": this distinguishes what is **live-validated** 
 | Job tracking, downloads, REST API | **Live-validated** |
 | Responsive dashboard + Three.js viewer | **Live-validated** — 320/375/768/1280 px, WebGL renders both samples |
 | Revit `.rvt` → Autodesk APS Model Derivative | **Implemented + unit-tested (mocked)** — *not live-validated* (requires a live APS account) |
-| Revit `.rvt` demo fallback (no credentials) | **Implemented** — deterministic substitute, clearly flagged |
 | S3 cloud storage (presigned URLs) | **Implemented + unit-tested (mocked)** — *not live-validated* (requires live AWS credentials) |
 
 ## Public safety

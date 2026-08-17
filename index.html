@@ -223,8 +223,8 @@
         <img src="assets/diagrams/conceptual-architecture.svg" alt="BIM Cloud Pipeline conceptual architecture: Revit and IFC in, GLB/GLTF and metadata JSON out" loading="lazy" />
       </div>
       <div class="note"><strong>Revit route:</strong> <code>.rvt</code> → Autodesk APS Model Derivative (an IFC derivative)
-        → the native IFC pipeline → GLB/GLTF + metadata. Without APS credentials the pipeline falls back to a bundled
-        representative model and flags it clearly.</div>
+        → the native IFC pipeline → GLB/GLTF + metadata. Without APS credentials the job fails with a clear error — an
+        uploaded file is never replaced by a sample.</div>
     </div>
   </section>
 
