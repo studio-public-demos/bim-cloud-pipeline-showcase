@@ -60,8 +60,9 @@
     .hero { text-align:center; padding:64px 20px 48px; max-width:880px; margin:0 auto; }
     .eyebrow { display:inline-block; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase;
       color:var(--accent2); border:1px solid var(--border); border-radius:999px; padding:5px 14px; margin-bottom:18px; }
-    .hero h1 { font-size:clamp(34px,6vw,56px); line-height:1.08; margin:0 0 18px; letter-spacing:-0.02em; }
+    .hero h1 { font-size:clamp(34px,6vw,56px); line-height:1.08; margin:0 0 12px; letter-spacing:-0.02em; }
     .hero h1 em { color:var(--accent2); font-style:normal; }
+    .hero-tag { font-size:clamp(17px,2.6vw,22px); font-weight:700; color:var(--text); margin:0 0 12px; }
     .hero .sub { color:var(--muted); font-size:18px; max-width:640px; margin:0 auto 28px; }
     .cta-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
     .btn { display:inline-flex; align-items:center; gap:8px; border-radius:9px; padding:13px 20px;
@@ -175,20 +176,22 @@
   <header>
     <span class="logo">◨</span>
     <span class="brand">BIM Cloud <em>Pipeline</em></span>
-    <span class="tagline">Revit &amp; IFC → optimised GLB/GLTF + structured metadata</span>
-    <a class="live-btn" href="https://bim-cloud-pipeline.onrender.com/" target="_blank" rel="noopener">▶ Launch the live pipeline</a>
+    <span class="tagline">IFC / Revit-derived BIM → GLB/GLTF + structured metadata</span>
+    <a class="live-btn" href="https://bim-cloud-pipeline.onrender.com/" target="_blank" rel="noopener" title="Hosted POC — availability may vary">Live POC · may vary</a>
   </header>
 
   <!-- Hero -->
   <section class="hero">
-    <span class="eyebrow">Public showcase · built with NebulaCloud Studio</span>
-    <h1>Turn <em>Revit &amp; IFC</em> into web-ready 3D + structured metadata</h1>
-    <p class="sub">One cloud pipeline converts heavyweight BIM files into lightweight
-      <strong>GLB/GLTF</strong> 3D assets and <strong>metadata JSON</strong> — for web, mobile,
-      AR/VR, XR and digital-twin applications.</p>
+    <span class="eyebrow">Proof-of-concept showcase · built with NebulaCloud Studio</span>
+    <h1>BIM Cloud <em>Pipeline</em></h1>
+    <p class="hero-tag">IFC / Revit-derived BIM → Web, Mobile, XR &amp; Digital Twins</p>
+    <p class="sub">Transform BIM <strong>geometry and semantics</strong> into optimized 3D assets and
+      structured, application-ready data — through one cloud pipeline and one API.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="https://bim-cloud-pipeline.onrender.com/" target="_blank" rel="noopener">▶ Run the live pipeline</a>
-      <a class="btn btn-ghost" href="#result">Explore the sample ↓</a>
+      <a class="btn btn-primary" href="#result">Explore the interactive model</a>
+      <a class="btn btn-ghost" href="https://github.com/studio-public-demos/bim-cloud-pipeline" target="_blank" rel="noopener">View open-source implementation</a>
+      <a class="btn btn-ghost" href="#demo">Watch demo</a>
+      <a class="btn btn-ghost" href="https://nebulacloud.studio" target="_blank" rel="noopener">Discuss your BIM workflow</a>
     </div>
     <div class="proof">
       <div class="stat"><div class="v">~92%</div><div class="k">smaller — 226 KB IFC → 17 KB GLB</div></div>
@@ -222,9 +225,24 @@
       <div class="diagram">
         <img src="assets/diagrams/conceptual-architecture.svg" alt="BIM Cloud Pipeline conceptual architecture: Revit and IFC in, GLB/GLTF and metadata JSON out" loading="lazy" />
       </div>
-      <div class="note"><strong>Revit route:</strong> <code>.rvt</code> → Autodesk APS Model Derivative (an IFC derivative)
-        → the native IFC pipeline → GLB/GLTF + metadata. Without APS credentials the job fails with a clear error — an
-        uploaded file is never replaced by a sample.</div>
+      <div class="note"><strong>Revit route (optional):</strong> <code>.rvt</code> → Autodesk APS Model Derivative → an IFC
+        derivative → the native IFC pipeline → GLB/GLTF + metadata. Live RVT conversion is disabled in the public POC
+        (Autodesk APS quota); the adapter is documented for local / bring-your-own-credentials use. An uploaded file is
+        never replaced by a sample.</div>
+    </div>
+  </section>
+
+  <!-- Demo video -->
+  <section class="block" id="demo">
+    <div class="wrap">
+      <h2>Watch the demo</h2>
+      <p class="lead">The full workflow — Architecture sample → 3D + metadata → Structural sample → compare → download.</p>
+      <div class="diagram">
+        <video controls preload="metadata" poster="assets/social-preview.png" style="width:100%;height:auto;display:block;background:#000;">
+          <source src="assets/videos/demo-full.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </div>
   </section>
 
@@ -327,15 +345,29 @@
   <section class="block" id="studio">
     <div class="wrap">
       <h2>Built with NebulaCloud Studio</h2>
-      <p class="lead">This pipeline — parser, derivative builder, REST API, dashboard, docs, tests, and this showcase —
-        was designed, built, and verified with NebulaCloud Studio.</p>
+      <p class="lead">NebulaCloud Studio was used to take this project from an engineering requirement
+        through implementation, testing and deployment — as one example of Studio building
+        domain-specific engineering applications (this one: BIM interoperability).</p>
       <div class="caps">
         <div class="cap"><span class="tick">✓</span><p><strong>Dependency-free IFC parser</strong> — real geometry + semantics from raw STEP, no BIM runtime.</p></div>
         <div class="cap"><span class="tick">✓</span><p><strong>Optimised derivatives</strong> — millimetre→metre conversion, per-element vertex colours, GLB + GLTF.</p></div>
         <div class="cap"><span class="tick">✓</span><p><strong>REST API</strong> — upload, job tracking, downloads, and model compare.</p></div>
-        <div class="cap"><span class="tick">✓</span><p><strong>Credential-gated adapters</strong> — Autodesk APS (Revit) and S3 storage.</p></div>
-        <div class="cap"><span class="tick">✓</span><p><strong>Public-demo hardening</strong> — uploads disabled, per-visitor history, limits + TTL cleanup.</p></div>
+        <div class="cap"><span class="tick">✓</span><p><strong>Credential-gated adapters</strong> — Autodesk APS (Revit, BYOC) and S3 storage.</p></div>
+        <div class="cap"><span class="tick">✓</span><p><strong>Public-demo safe</strong> — per-visitor history, upload limits, TTL cleanup, APS quota protection.</p></div>
         <div class="cap"><span class="tick">✓</span><p><strong>Verified end-to-end</strong> — real buildingSMART samples, automated tests, responsive UI.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open-source CTA -->
+  <section class="block" id="opensource">
+    <div class="wrap">
+      <div class="cta" style="text-align:left;">
+        <h2>Want to experiment with it yourself?</h2>
+        <p style="margin-left:0;">The reference implementation is open source (MIT) on GitHub. Clone it, run it
+          locally, modify it and use it as a starting point for your own BIM workflow.</p>
+        <a class="btn btn-primary" href="https://github.com/studio-public-demos/bim-cloud-pipeline" target="_blank" rel="noopener">View the open-source implementation →</a>
+        <a class="btn btn-ghost" href="https://github.com/studio-public-demos/bim-cloud-pipeline#try-it-yourself" target="_blank" rel="noopener" style="margin-left:8px;">Quick start</a>
       </div>
     </div>
   </section>

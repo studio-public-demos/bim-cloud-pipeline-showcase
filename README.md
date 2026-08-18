@@ -1,25 +1,40 @@
 # BIM Cloud Pipeline
 
-**Turn Revit & IFC models into web-ready GLB/GLTF 3D assets and structured metadata JSON — through one cloud pipeline and one API.**
+**Turn IFC / Revit-derived BIM into optimized GLB/GLTF 3D assets and structured metadata for web, mobile, XR and digital-twin applications.**
 
 > This repository is the public project showcase for **BIM Cloud Pipeline**,
 > created using **NebulaCloud Studio**.
 >
 > The full engineering implementation is published separately at
-> **[studio-public-demos/bim-cloud-pipeline](https://github.com/studio-public-demos/bim-cloud-pipeline)**.
+> **[studio-public-demos/bim-cloud-pipeline](https://github.com/studio-public-demos/bim-cloud-pipeline)** (MIT).
 
 ---
 
+## What this is
+
+A **proof-of-concept / reference implementation** demonstrating BIM
+interoperability: BIM input → cloud-style processing → optimized 3D geometry +
+structured BIM metadata → visualization → model comparison → API-accessible
+outputs → downstream web/mobile/XR/digital-twin applicability.
+
+## What this is not
+
+It is **not** a replacement for Revit, a BIM authoring or engineering-analysis
+application, a contractual BIM validation system, or a production multi-tenant
+SaaS platform.
+
 ## Overview
 
-BIM Cloud Pipeline is a cloud service that takes heavyweight BIM files — Autodesk
-Revit (`.rvt`) and IFC (`.ifc`) — and converts them into the lightweight, open
-formats that web, mobile, AR/VR, XR, and digital-twin applications actually need:
+BIM Cloud Pipeline takes heavyweight BIM input — IFC (`.ifc`, primary) and
+Revit-derived IFC (via optional Autodesk APS) — and produces the lightweight,
+open formats that web, mobile, AR/VR, XR, and digital-twin applications need:
 
 - **`model.glb` / `model.gltf`** — optimised, self-contained 3D assets (metres, with
   material colours preserved).
 - **`metadata.json`** — structured BIM data (elements, property sets, quantities,
   materials, classification, spatial containment).
+
+> **The GLB tells an application what the building looks like. The metadata tells it what the building means.**
 
 Every job is tracked with live status, stage progress, and processing logs, and the
 whole thing is exposed as a clean REST API for integration into custom products.
@@ -35,7 +50,7 @@ data before they can build any downstream product.
 
 A single pipeline removes that friction:
 
-1. **Upload** Revit / IFC (or glTF/GLB) files through a dashboard or API.
+1. **Upload** IFC (or glTF/GLB) files through a dashboard or API.
 2. **Process** on the cloud — geometry is parsed and optimised, semantics are extracted.
 3. **Track** job status, stage-by-stage progress, and processing logs.
 4. **Download** optimised GLB/GLTF plus structured metadata JSON.
@@ -43,10 +58,10 @@ A single pipeline removes that friction:
 
 ## Live Demo
 
-**▶ Try the live pipeline:** [bim-cloud-pipeline.onrender.com](https://bim-cloud-pipeline.onrender.com/) —
-upload your own Revit (.rvt) / IFC (.ifc) / glTF (.glb) file, or run the bundled
-Architecture and Structural samples, and watch them convert to GLB/GLTF +
-structured metadata in real time.
+**▶ Try the live POC:** [bim-cloud-pipeline.onrender.com](https://bim-cloud-pipeline.onrender.com/) —
+upload your own IFC (.ifc) / glTF (.glb) file, or run the bundled Architecture and
+Structural samples, and watch them convert to GLB/GLTF + structured metadata in real
+time. *Availability may vary on demonstration infrastructure.*
 
 **Instant static preview (no backend):** [studio-public-demos.github.io/bim-cloud-pipeline-showcase](https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/)
 
@@ -60,20 +75,25 @@ The full pipeline (upload → process → track → download) runs in the
 
 ## Demo Video
 
-A short walkthrough of the dashboard, mobile view, and 3D viewer:
+Full walkthrough (~3 min) of the dashboard, 3D viewer, metadata and comparison:
+
+- **Full demo:** [`assets/videos/demo-full.mp4`](assets/videos/demo-full.mp4)
+- **Short (social):** [`assets/videos/demo-short.mp4`](assets/videos/demo-short.mp4)
 
 ![BIM Cloud Pipeline — demo walkthrough](assets/videos/demo-walkthrough.gif)
 
-**▶ Live demo:** [studio-public-demos.github.io/bim-cloud-pipeline-showcase](https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/)
+**▶ Interactive showcase:** [studio-public-demos.github.io/bim-cloud-pipeline-showcase](https://studio-public-demos.github.io/bim-cloud-pipeline-showcase/)
 
 ## Project Screenshots
 
 | | |
 |---|---|
-| ![Dashboard](assets/screenshots/01-dashboard.png) | ![Full application](assets/screenshots/02-full-app.png) |
-| **Dashboard** — upload, job list, and live 3D viewer | **Full app** — processing stages, logs, downloads |
-| ![Mobile](assets/screenshots/03-mobile.png) | ![Docs](assets/screenshots/04-docs.png) |
-| **Mobile-responsive** (390 px) | **Browsable documentation** hub |
+| ![Dashboard](assets/screenshots/01-dashboard.png) | ![Architecture model](assets/screenshots/02-architecture-model.png) |
+| **Dashboard** — upload, job list, samples | **Architecture model** — 3D viewer (GLB) |
+| ![Metadata](assets/screenshots/03-metadata.png) | ![Comparison](assets/screenshots/04-comparison.png) |
+| **Metadata** — structured BIM JSON | **Comparison** — Architecture vs Structural |
+| ![API](assets/screenshots/05-api.png) | ![Mobile](assets/screenshots/06-mobile.png) |
+| **API** — REST endpoints | **Mobile-responsive** (390 px) |
 
 ## Generated Outputs
 

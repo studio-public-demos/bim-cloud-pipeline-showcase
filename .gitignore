@@ -1,3 +1,10 @@
 .DS_Store
 Thumbs.db
 *.log
+
+# Studio internal delivery state (not part of the public showcase)
+PRODUCT_STATE.yaml
+
+# Local verification artifacts
+assets/screenshots/verify-*
+assets/screenshots/*-results.json
